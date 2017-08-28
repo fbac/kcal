@@ -43,10 +43,22 @@ Where options include:
 
 Basic Options
 < --formula lyle|harris-benedict >: Formula used to calculate kcal.
-[ --weight <weight> ]: Current weight in kg.
-[ --sex man|woman ]: Sex of the subject.
-[ --plan bulk|cut|maintenance ]: Diet's objective.
-[ --deviation <deficit|superavit> ]: Deficit or superavit in % to apply in kcal calculations.
+
+Lyle specific options
+ --sex: Sex of the subject [ man | woman ]
+ --weight: Current weight in kg
+ --lean-mass: Current lean mass weight in kg
+ --plan: Objetive of this diet [ bulk | cut | maint ]
+
+Harris-Benefict specific options
+ --sex: Sex of the subject [ man | woman ]
+ --weight: Current weight in kg
+ --lean-mass: Current lean mass weight in kg
+ --height: Current height in cm
+ --age: Age in years
+ --activity: Activity index. 1.1 for sedentary, 1.3 lesser exercise, 1.5 moderate exercise, 1.7 high activity
+ --plan: Objetive of this diet [ bulk | cut | maint ]
+ --deviation: Deficit or superavit in % to apply in kcal calculations.
 `,
 	PreRunE: func(c *cobra.Command, args []string) error {
 		return checkRequiredFlags(c.Flags())
@@ -77,7 +89,7 @@ Basic Options
 		} else if pFormula == "harris-benedict" {
 			fmt.Println("init hb", pHeight, pDeviation, pActivity, pAge)
 		} else {
-			return errors.New("Formula not recognized")
+			return errors.New("Formula not recognized. Available formula: lyle, harris-benedict")
 		}
 
 		return nil
