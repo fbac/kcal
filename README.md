@@ -4,4 +4,3 @@ I'm just fat and lazy. And I guess those two comes together.
 
 ### TODO
 - Add some more formula
-- Refactor formula to be packages
