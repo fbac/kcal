@@ -87,6 +87,7 @@ Basic Options
 			}
 
 		} else if pFormula == "harris-benedict" {
+			// work in progress
 			fmt.Println(pDeviation, pHeight, pActivity, pAge)
 		} else {
 			return errors.New("Formula not recognized")
@@ -133,19 +134,19 @@ func initLyle(w float32, s string, p string) (*person, error) {
 	if w > 0 {
 		lyle.weight = w
 	} else {
-		fmt.Printf("Weight not recognized, insert weight in kg: ")
+		fmt.Printf("Weight not recognized")
 	}
 
 	if s == "man" || s == "woman" {
 		lyle.sex = s
 	} else {
-		fmt.Printf("Sex not recognized, insert sex [man, woman]: ")
+		fmt.Printf("Sex not recognized")
 	}
 
 	if p == "bulk" || p == "maint" || p == "cut" {
 		lyle.plan = p
 	} else {
-		fmt.Printf("Plan not recognized, insert plan [bulk, cut, maint]: ")
+		fmt.Printf("Plan not recognized")
 	}
 
 	return &lyle, nil
