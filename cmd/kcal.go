@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cmd
+package kcal
 
 import (
 	"fmt"
 	"os"
 	"errors"
+	"kcal/pkg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -85,7 +86,7 @@ Harris-Benefict specific options
 		if err != nil { return err }
 
 		if pFormula == "lyle" {
-			initLyle(pWeight, pSex, pPlan, pLeanmass)
+			lyle.InitLyle(pWeight, pSex, pPlan, pLeanmass)
 		} else if pFormula == "harris-benedict" {
 			fmt.Println("init hb", pHeight, pDeviation, pActivity, pAge)
 		} else {
@@ -123,88 +124,4 @@ func init() {
 	RootCmd.Flags().Float32("activity", 0, "Activity factor")
 	RootCmd.Flags().StringP("plan", "p", "", "Plan: bulk, maint or cut")
 	RootCmd.Flags().Float32("deviation",  0, "Deficit or superavit to be applied")
-}
-
-// Diet
-func initLyle(weight float32, sex string, plan string, leanmass float32) {
-
-	lyle := person{}
-
-	if weight > 0 {
-		lyle.weight = weight
-	} else {
-		fmt.Println("Weight not defined")
-		os.Exit(1)
-	}
-
-	if leanmass == 0 || leanmass >= weight {
-                fmt.Println("Lean mass not defined")
-                os.Exit(1)
-        }
-
-	if sex == "man" || sex == "woman" {
-		lyle.sex = sex
-	} else {
-		fmt.Println("Sex not defined")
-		os.Exit(1)
-	}
-
-	if plan == "bulk" || plan == "maint" || plan == "cut" {
-		lyle.plan = plan
-	} else {
-		fmt.Println("Plan not recognized")
-		os.Exit(1)
-	}
-
-	kcal := execLyle(&lyle)
-	fat, prot, ch := calculateMacro(kcal, leanmass)
-
-	fmt.Println("[ Lyle Formulae ]")
-	fmt.Printf("Total kcals: %.1f kcals\n", kcal)
-        fmt.Printf("Fat intake: %.1f gr\n", fat)
-	fmt.Printf("Prot intake: %.1f gr\n", prot)
-        fmt.Printf("Carbs intake: %.1f gr\n", ch)
-}
-
-func execLyle(dataLyle *person) (float32) {
-
-	var kcal float32
-	
-	if dataLyle.sex == "man" {
-		switch dataLyle.plan {
-		  case "bulk":
-			  kcal = dataLyle.weight * 40
-		  case "cut":
-			  kcal = dataLyle.weight * 24
-		  case "maint":
-			  kcal = dataLyle.weight * 35
-		  default:
-		 }
-	} else if dataLyle.sex == "woman" {
-		switch dataLyle.plan {    
-                  case "bulk":
-			  kcal = dataLyle.weight * 35
-                  case "cut":
-			  kcal = dataLyle.weight * 22
-                  case "maint":
-			  kcal = dataLyle.weight * 31
-                  default:
-		  }
-	}
-
-	return kcal
-}
-
-func calculateMacro(kcal float32, leanmass float32) (float32, float32, float32){
-	var fat, prot, ch float32
-
-	fat = (kcal * 0.25)/9
-	prot = leanmass * 2.2
-	ch = (kcal - (fat * 9) - (prot * 4))/4
-
-	return fat, prot, ch
-}
-
-func isFloat(val float32) bool {
-    return val == float32(int(val))
 }
