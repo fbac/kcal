@@ -23,17 +23,6 @@ import (
 	"github.com/spf13/pflag"
 )
 
-type person struct {
-	sex string
-	age int
-	height float32
-	weight float32
-	leanmass float32
-        activity float32
-	plan string
-        deviation float32
-}
-
 var RootCmd = &cobra.Command{
 	Use:   "kcal",
 	Short: "Calculate kcal and macronutrients distribution",
