@@ -43,10 +43,22 @@ Where options include:
 
 Basic Options
 < --formula lyle|harris-benedict >: Formula used to calculate kcal.
-[ --weight <weight> ]: Current weight in kg.
-[ --sex man|woman ]: Sex of the subject.
-[ --plan bulk|cut|maintenance ]: Diet's objective.
-[ --deviation <deficit|superavit> ]: Deficit or superavit in % to apply in kcal calculations.
+
+Lyle specific options
+ --sex: Sex of the subject [ man | woman ]
+ --weight: Current weight in kg
+ --lean-mass: Current lean mass weight in kg
+ --plan: Objetive of this diet [ bulk | cut | maint ]
+
+Harris-Benefict specific options
+ --sex: Sex of the subject [ man | woman ]
+ --weight: Current weight in kg
+ --lean-mass: Current lean mass weight in kg
+ --height: Current height in cm
+ --age: Age in years
+ --activity: Activity index. 1.1 for sedentary, 1.3 lesser exercise, 1.5 moderate exercise, 1.7 high activity
+ --plan: Objetive of this diet [ bulk | cut | maint ]
+ --deviation: Deficit or superavit in % to apply in kcal calculations.
 `,
 	PreRunE: func(c *cobra.Command, args []string) error {
 		return checkRequiredFlags(c.Flags())
@@ -90,7 +102,7 @@ Basic Options
 			// work in progress
 			fmt.Println(pDeviation, pHeight, pActivity, pAge)
 		} else {
-			return errors.New("Formula not recognized")
+			return errors.New("Formula not recognized. Available formula: lyle, harris-benedict")
 		}
 
 		return nil
@@ -106,7 +118,7 @@ func Execute() {
 
 func checkRequiredFlags(flags *pflag.FlagSet) error {
         if len(flags.Lookup("formula").Value.String()) == 0 {
-		return errors.New("A formula is needed")
+		return errors.New("Specify a formula: lyle or harris-benedict")
         }
         return nil
 }
@@ -134,19 +146,19 @@ func initLyle(w float32, s string, p string) (*person, error) {
 	if w > 0 {
 		lyle.weight = w
 	} else {
-		fmt.Printf("Weight not recognized")
+		return nil, errors.New("Weight not recognized")
 	}
 
 	if s == "man" || s == "woman" {
 		lyle.sex = s
 	} else {
-		fmt.Printf("Sex not recognized")
+		return nil, errors.New("Sex not recognized")
 	}
 
 	if p == "bulk" || p == "maint" || p == "cut" {
 		lyle.plan = p
 	} else {
-		fmt.Printf("Plan not recognized")
+		return nil, errors.New("Plan not recognized")
 	}
 
 	return &lyle, nil
