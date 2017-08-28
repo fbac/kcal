@@ -1,4 +1,4 @@
-##Simple kcal and macronutrients calculator
+## Simple kcal and macronutrients calculator
 
 I'm just fat and lazy.
 
