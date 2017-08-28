@@ -23,7 +23,6 @@ import (
 )
 
 type person struct {
-	profile string
 	sex string
 	age int
 	height float32
@@ -48,10 +47,6 @@ Basic Options
 [ --sex man|woman ]: Sex of the subject.
 [ --plan bulk|cut|maintenance ]: Diet's objective.
 [ --deviation <deficit|superavit> ]: Deficit or superavit in % to apply in kcal calculations.
-
-Profile Configuration:
-[ --profile: <name> ]: Configuration profile to use. It would be created if doesn't exists.
-
 `,
 	PreRunE: func(c *cobra.Command, args []string) error {
 		return checkRequiredFlags(c.Flags())
