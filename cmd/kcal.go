@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cmd
+package kcal
 
 import (
 	"fmt"
 	"os"
 	"errors"
+	"kcal/pkg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -85,7 +86,7 @@ Harris-Benefict specific options
 		if err != nil { return err }
 
 		if pFormula == "lyle" {
-			initLyle(pWeight, pSex, pPlan, pLeanmass)
+			lyle.InitLyle(pWeight, pSex, pPlan, pLeanmass)
 		} else if pFormula == "harris-benedict" {
 			fmt.Println("init hb", pHeight, pDeviation, pActivity, pAge)
 		} else {
@@ -124,6 +125,7 @@ func init() {
 	RootCmd.Flags().StringP("plan", "p", "", "Plan: bulk, maint or cut")
 	RootCmd.Flags().Float32("deviation",  0, "Deficit or superavit to be applied")
 }
+<<<<<<< HEAD:cmd/diet.go
 
 // Diet
 func initLyle(weight float32, sex string, plan string, leanmass float32) {
@@ -208,3 +210,5 @@ func calculateMacro(kcal float32, leanmass float32) (float32, float32, float32){
 func isFloat(val float32) bool {
     return val == float32(int(val))
 }
+=======
+>>>>>>> develop:cmd/kcal.go

@@ -17,5 +17,5 @@ package main
 import "kcal/cmd"
 
 func main() {
-	cmd.Execute()
+	kcal.Execute()
 }
