@@ -73,22 +73,9 @@ Basic Options
 		if err != nil { return err }
 
 		if pFormula == "lyle" {
-			lyleDiet, err := execLyle(pWeight, pSex, pPlan)
-			if err != nil { 
-				return err 
-			} else if pLeanmass == 0 || pLeanmass >= pWeight {
-				return errors.New("Lean mass not recognized or higher than weight")
-			} else {
-				fat, prot, ch := calculateMacro(lyleDiet, pLeanmass)
-                	        fmt.Printf("Total kcals: %.1f kcals\n", lyleDiet)
-                        	fmt.Printf("Fat intake: %.1f gr\n", fat)
-                        	fmt.Printf("Prot intake: %.1f gr\n", prot)
-                        	fmt.Printf("Carbs intake: %.1f gr\n", ch)
-			}
-
+			initLyle(pWeight, pSex, pPlan, pLeanmass)
 		} else if pFormula == "harris-benedict" {
-			// work in progress
-			fmt.Println(pDeviation, pHeight, pActivity, pAge)
+			fmt.Println("init hb", pHeight, pDeviation, pActivity, pAge)
 		} else {
 			return errors.New("Formula not recognized")
 		}
@@ -106,7 +93,7 @@ func Execute() {
 
 func checkRequiredFlags(flags *pflag.FlagSet) error {
         if len(flags.Lookup("formula").Value.String()) == 0 {
-		return errors.New("A formula is needed")
+		return errors.New("A formula must be defined. Options: lyle | harris-benedict")
         }
         return nil
 }
@@ -127,36 +114,50 @@ func init() {
 }
 
 // Diet
-func initLyle(w float32, s string, p string) (*person, error) {
+func initLyle(weight float32, sex string, plan string, leanmass float32) {
 
 	lyle := person{}
-	
-	if w > 0 {
-		lyle.weight = w
+
+	if weight > 0 {
+		lyle.weight = weight
 	} else {
-		fmt.Printf("Weight not recognized")
+		fmt.Println("Weight not defined")
+		os.Exit(1)
 	}
 
-	if s == "man" || s == "woman" {
-		lyle.sex = s
+	if leanmass == 0 || leanmass >= weight {
+                fmt.Println("Lean mass not defined")
+                os.Exit(1)
+        }
+
+	if sex == "man" || sex == "woman" {
+		lyle.sex = sex
 	} else {
-		fmt.Printf("Sex not recognized")
+		fmt.Println("Sex not defined")
+		os.Exit(1)
 	}
 
-	if p == "bulk" || p == "maint" || p == "cut" {
-		lyle.plan = p
+	if plan == "bulk" || plan == "maint" || plan == "cut" {
+		lyle.plan = plan
 	} else {
-		fmt.Printf("Plan not recognized")
+		fmt.Println("Plan not recognized")
+		os.Exit(1)
 	}
 
-	return &lyle, nil
+	kcal := execLyle(&lyle)
+	fat, prot, ch := calculateMacro(kcal, leanmass)
+
+	fmt.Println("[ Lyle Formulae ]")
+	fmt.Printf("Total kcals: %.1f kcals\n", kcal)
+        fmt.Printf("Fat intake: %.1f gr\n", fat)
+	fmt.Printf("Prot intake: %.1f gr\n", prot)
+        fmt.Printf("Carbs intake: %.1f gr\n", ch)
 }
 
-func execLyle(w float32, s string, p string) (float32, error) {
-	dataLyle, err := initLyle(w, s, p)
-	if err != nil { return 0, err }
+func execLyle(dataLyle *person) (float32) {
 
 	var kcal float32
+	
 	if dataLyle.sex == "man" {
 		switch dataLyle.plan {
 		  case "bulk":
@@ -179,7 +180,7 @@ func execLyle(w float32, s string, p string) (float32, error) {
 		  }
 	}
 
-	return kcal, nil
+	return kcal
 }
 
 func calculateMacro(kcal float32, leanmass float32) (float32, float32, float32){
