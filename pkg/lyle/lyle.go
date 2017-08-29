@@ -26,6 +26,8 @@ type person struct {
 	plan string
 }
 
+var kcal float32
+
 func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
 	
 	lyle := person{}
@@ -55,9 +57,9 @@ func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
 		fmt.Println("Plan not recognized")
 		os.Exit(1)
 	}
-
-	kcal := execLyle(&lyle)
-	fat, prot, ch := common.CalculateMacro(kcal, leanmass)
+	
+	execLyle(&lyle, &kcal)
+	fat, prot, ch := common.CalculateMacro(&kcal, leanmass)
 
 	fmt.Println("[ Lyle Formulae ]")
 	fmt.Printf("Total kcals:\t%.1f kcals\n", kcal)
@@ -66,31 +68,27 @@ func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
         fmt.Printf("Carbs intake:\t%.1f gr\n", ch)
 }
 
-func execLyle(dataLyle *person) float32 {
+func execLyle(dataLyle *person, kcal *float32) {
 
-	var kcal float32
-	
 	if dataLyle.sex == "man" {
 		switch dataLyle.plan {
 		  case "bulk":
-			  kcal = dataLyle.weight * 40
+			  *kcal = dataLyle.weight * 40
 		  case "cut":
-			  kcal = dataLyle.weight * 24
+			  *kcal = dataLyle.weight * 24
 		  case "maint":
-			  kcal = dataLyle.weight * 35
+			  *kcal = dataLyle.weight * 35
 		  default:
 		 }
 	} else if dataLyle.sex == "woman" {
 		switch dataLyle.plan {    
                   case "bulk":
-			  kcal = dataLyle.weight * 35
+			  *kcal = dataLyle.weight * 35
                   case "cut":
-			  kcal = dataLyle.weight * 22
+			  *kcal = dataLyle.weight * 22
                   case "maint":
-			  kcal = dataLyle.weight * 31
+			  *kcal = dataLyle.weight * 31
                   default:
 		  }
 	}
-
-	return kcal
 }
