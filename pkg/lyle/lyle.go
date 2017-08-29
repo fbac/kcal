@@ -1,4 +1,4 @@
-// Copyright © 2017 NAME HERE <EMAIL ADDRESS>
+// Copyright © 2017 Borja Aranda <borja@redhat.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,17 +17,14 @@ package lyle
 import (
 	"fmt"
 	"os"
+	"kcal/pkg/common"
 )
 
 type person struct {
 	sex string
-	age int
-	height float32
 	weight float32
 	leanmass float32
-        activity float32
 	plan string
-        deviation float32
 }
 
 func InitLyle(weight float32, sex string, plan string, leanmass float32) {
@@ -61,7 +58,7 @@ func InitLyle(weight float32, sex string, plan string, leanmass float32) {
 	}
 
 	kcal := execLyle(&lyle)
-	fat, prot, ch := calculateMacro(kcal, leanmass)
+	fat, prot, ch := common.CalculateMacro(kcal, leanmass)
 
 	fmt.Println("[ Lyle Formulae ]")
 	fmt.Printf("Total kcals: %.1f kcals\n", kcal)
@@ -97,18 +94,4 @@ func execLyle(dataLyle *person) (float32) {
 	}
 
 	return kcal
-}
-
-func calculateMacro(kcal float32, leanmass float32) (float32, float32, float32){
-	var fat, prot, ch float32
-
-	fat = (kcal * 0.25)/9
-	prot = leanmass * 2.2
-	ch = (kcal - (fat * 9) - (prot * 4))/4
-
-	return fat, prot, ch
-}
-
-func isFloat(val float32) bool {
-    return val == float32(int(val))
 }

@@ -12,17 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package cmd
 
 import (
 	"fmt"
 	"os"
-	"kcal/cmd"
+	"github.com/spf13/cobra"
 )
 
-func main() {
-	if err := cmd.RootCmd.Execute(); err != nil {
+var RootCmd = &cobra.Command{
+	Use:   "kcal",
+	Short: "Calculate kcal and macronutrients distribution",
+	Long: `Calculate kcal income and macronutrients distribution.
+Usage: kcal [command]
+`,
+}
+
+func Execute() {
+	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func init() {
 }
