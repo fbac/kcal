@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"kcal/pkg/lyle"
 	"github.com/spf13/cobra"
 )
@@ -26,6 +27,7 @@ var lyleCmd = &cobra.Command{
   	Long:  `Calculate kcals and macronutrients using Lyle McDonald formula`,
 
  	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("[ Lyle Formulae ]")
 		lyle.InitLyle(&lWeight, &lSex, &lPlan, &lLeanmass)
   	},
 }
