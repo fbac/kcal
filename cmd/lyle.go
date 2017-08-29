@@ -5,16 +5,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	lWeight float32
+	lLeanmass float32
+	lPlan string
+	lSex string
+)
+
 func init() {
  	RootCmd.AddCommand(lyleCmd)
-	lyleCmd.Flags().StringP("sex", "s", "", "Sex of the subject [ man | woman ]")
-        lyleCmd.Flags().Float32("weight", 0, "Current weight in kg")
-        lyleCmd.Flags().Float32("lean-mass", 0, "Current lean mass weight in kg")
-        lyleCmd.Flags().StringP("plan", "p", "", "Objetive of this diet [ bulk | cut | maint ]")
+	lyleCmd.Flags().StringVarP(&lSex, "sex", "s", "", "Sex of the subject [ man | woman ]")
+        lyleCmd.Flags().Float32VarP(&lLeanmass, "lean-mass", "l", 0, "Current lean mass weight in kg")
+        lyleCmd.Flags().StringVarP(&lPlan, "plan", "p", "", "Objetive of this diet [ bulk | cut | maint ]")
+	lyleCmd.Flags().Float32VarP(&lWeight, "weight", "w", 0, "Current weight in kg")
 }
-
-var (
-)
 
 var lyleCmd = &cobra.Command{
  	Use:   "lyle",
@@ -22,11 +26,6 @@ var lyleCmd = &cobra.Command{
   	Long:  `Calculate kcals and macronutrients using Lyle McDonald formula`,
 
  	Run: func(cmd *cobra.Command, args []string) {
-		lPlan,_  := cmd.Flags().GetString("plan")
-                lWeight,_ := cmd.Flags().GetFloat32("weight")
-                lLeanmass,_ := cmd.Flags().GetFloat32("lean-mass")
-                lSex,_ := cmd.Flags().GetString("sex")
-
-		lyle.InitLyle(lWeight, lSex, lPlan, lLeanmass)
+		lyle.InitLyle(&lWeight, &lSex, &lPlan, &lLeanmass)
   	},
 }

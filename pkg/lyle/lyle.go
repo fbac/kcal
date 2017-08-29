@@ -23,35 +23,34 @@ import (
 type person struct {
 	sex string
 	weight float32
-	leanmass float32
 	plan string
 }
 
-func InitLyle(weight float32, sex string, plan string, leanmass float32) {
+func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
 	
 	lyle := person{}
 
-	if weight > 0 {
-		lyle.weight = weight
+	if *weight > 0 {
+		lyle.weight = *weight
 	} else {
 		fmt.Println("Weight not defined")
 		os.Exit(1)
 	}
 
-	if leanmass == 0 || leanmass >= weight {
+	if *leanmass == 0 || *leanmass >= *weight {
                 fmt.Println("Lean mass not defined")
                 os.Exit(1)
         }
 
-	if sex == "man" || sex == "woman" {
-		lyle.sex = sex
+	if *sex == "man" || *sex == "woman" {
+		lyle.sex = *sex
 	} else {
 		fmt.Println("Sex not defined")
 		os.Exit(1)
 	}
 
-	if plan == "bulk" || plan == "maint" || plan == "cut" {
-		lyle.plan = plan
+	if *plan == "bulk" || *plan == "maint" || *plan == "cut" {
+		lyle.plan = *plan
 	} else {
 		fmt.Println("Plan not recognized")
 		os.Exit(1)
@@ -67,7 +66,7 @@ func InitLyle(weight float32, sex string, plan string, leanmass float32) {
         fmt.Printf("Carbs intake:\t%.1f gr\n", ch)
 }
 
-func execLyle(dataLyle *person) (float32) {
+func execLyle(dataLyle *person) float32 {
 
 	var kcal float32
 	
