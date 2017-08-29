@@ -28,7 +28,7 @@ type person struct {
 }
 
 func InitLyle(weight float32, sex string, plan string, leanmass float32) {
-
+	
 	lyle := person{}
 
 	if weight > 0 {
@@ -61,10 +61,10 @@ func InitLyle(weight float32, sex string, plan string, leanmass float32) {
 	fat, prot, ch := common.CalculateMacro(kcal, leanmass)
 
 	fmt.Println("[ Lyle Formulae ]")
-	fmt.Printf("Total kcals: %.1f kcals\n", kcal)
-        fmt.Printf("Fat intake: %.1f gr\n", fat)
-	fmt.Printf("Prot intake: %.1f gr\n", prot)
-        fmt.Printf("Carbs intake: %.1f gr\n", ch)
+	fmt.Printf("Total kcals:\t%.1f kcals\n", kcal)
+        fmt.Printf("Fat intake:\t%.1f gr\n", fat)
+	fmt.Printf("Prot intake:\t%.1f gr\n", prot)
+        fmt.Printf("Carbs intake:\t%.1f gr\n", ch)
 }
 
 func execLyle(dataLyle *person) (float32) {

@@ -14,8 +14,6 @@ var hbCmd = &cobra.Command{
   	Short: "Harris-Benedict formula",
   	Long:  `Calculate kcals and macronutrients using Harris-Benedict formula
 
-Usage: kcal hb [options]
-
 Basic Options
  --sex: Sex of the subject [ man | woman ]
  --weight: Current weight in kg
