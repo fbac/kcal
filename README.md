@@ -6,4 +6,5 @@ I'm just fat and lazy.
 - Add some more formula
 - Add customizable prot and fat ratios
 - Separate validate{Weight, Sex, Leanmass, ...}
+- checkRequiredFlags
 - Improve it! (as a general idea)

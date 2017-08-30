@@ -58,6 +58,8 @@ func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
 	}
 	
 	execLyle(&lyle, &kcal)
+	
+	fmt.Printf("Lyle Formulae\n\nData input:\n- sex:\t\t%v\n- plan:\t\t%v\n- weight:\t%.2f kg\n- lean mass:\t%.2f kg\n\n", lyle.sex, lyle.plan, lyle.weight, leanmass)
 
 	if *leanmass == 0 {
 		fmt.Printf("Total kcals:\t%.1f kcals\n", kcal)
