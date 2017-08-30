@@ -64,10 +64,10 @@ func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
 		fmt.Printf("\nRun the command with --lean-mass or -l to obtain macronutrients distribution\n")
 	} else {
 		fat, prot, ch := common.CalculateMacro(&kcal, leanmass)
-		fmt.Printf("Total kcals:\t%.1f kcals\n", kcal)
-	        fmt.Printf("Fat intake:\t%.1f gr\n", fat)
-        	fmt.Printf("Prot intake:\t%.1f gr\n", prot)
-        	fmt.Printf("Carbs intake:\t%.1f gr\n", ch)
+		fmt.Printf("Total kcals:\t%.0f kcals\n", kcal)
+	        fmt.Printf("Fat intake:\t%.0f gr\n", fat)
+        	fmt.Printf("Prot intake:\t%.0f gr\n", prot)
+        	fmt.Printf("Carbs intake:\t%.0f gr\n", ch)
 	}
 }
 
