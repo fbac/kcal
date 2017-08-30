@@ -38,10 +38,10 @@ func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
 		os.Exit(1)
 	}
 
-	if *leanmass == 0 || *leanmass >= *weight {
-                fmt.Println("Lean mass not defined")
-                os.Exit(1)
-        }
+	if *leanmass >= *weight {
+		fmt.Println("Lean mass can't be higher than weight")
+		os.Exit(1)
+	}
 
 	if *sex == "man" || *sex == "woman" {
 		lyle.sex = *sex
@@ -58,12 +58,17 @@ func InitLyle(weight *float32, sex *string, plan *string, leanmass *float32) {
 	}
 	
 	execLyle(&lyle, &kcal)
-	fat, prot, ch := common.CalculateMacro(&kcal, leanmass)
 
-	fmt.Printf("Total kcals:\t%.1f kcals\n", kcal)
-        fmt.Printf("Fat intake:\t%.1f gr\n", fat)
-	fmt.Printf("Prot intake:\t%.1f gr\n", prot)
-        fmt.Printf("Carbs intake:\t%.1f gr\n", ch)
+	if *leanmass == 0 {
+		fmt.Printf("Total kcals:\t%.1f kcals\n", kcal)
+		fmt.Printf("\nRun the command with --lean-mass or -l to obtain macronutrients distribution\n")
+	} else {
+		fat, prot, ch := common.CalculateMacro(&kcal, leanmass)
+		fmt.Printf("Total kcals:\t%.1f kcals\n", kcal)
+	        fmt.Printf("Fat intake:\t%.1f gr\n", fat)
+        	fmt.Printf("Prot intake:\t%.1f gr\n", prot)
+        	fmt.Printf("Carbs intake:\t%.1f gr\n", ch)
+	}
 }
 
 func execLyle(dataLyle *person, kcal *float32) {
